@@ -1,0 +1,32 @@
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getTodos } from "../api/todoService";
+
+const TodoList = () => {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    getTodos().then((data) => setTodos(data.slice(0, 20))); // limit for UI
+  }, []);
+
+  return (
+    <div>
+      <h2>Todo List</h2>
+
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            <Link to={`/todo/${todo.id}`}>
+              <strong>{todo.title}</strong>
+            </Link>
+            <span>
+              {" "}— {todo.completed ? "✅ Completed" : "❌ Pending"}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TodoList;
